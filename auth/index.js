@@ -17,7 +17,8 @@ const schema = Joi.object().keys({
 function createTokenSendResponse(user, res, next) {
     const payload = {
         _id: user._id,
-        email: user.email
+        email: user.email,
+        rub: user.rub
     };
     jwt.sign(payload, '1wb46x!fasdf!efpeurpwurjfa;sldfj941!!!jfdjfa093nn', {
         expiresIn: '1d'
@@ -28,7 +29,9 @@ function createTokenSendResponse(user, res, next) {
             next(error);
         } else {
             res.json({
-                token
+                email: payload.email,
+                token,
+                rub: user.rub,
             });
         }
     });
