@@ -3,6 +3,8 @@ const volleyball = require('volleyball');
 const cors = require('cors');
 const app = express();
 const auth = require('./auth/index');
+const notes = require('./api/notes');
+const middlewares = require('./auth/middleware');
 
 app.use(volleyball);
 app.use(cors({
@@ -10,13 +12,17 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.use(middlewares.checkTokenSetUser);
+
 app.get('/', (req, res) => {
    res.json({
-       message: 'Hello World!'
+       message: 'Hello World!',
+       user: req.user,
    })
 });
 
 app.use('/auth', auth);
+app.use('/api/v1/notes', middlewares.isLoggedIn, notes);
 
 function notFound(req, res, next) {
     res.status(404);

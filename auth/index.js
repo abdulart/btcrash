@@ -36,7 +36,7 @@ function createTokenSendResponse(user, res, next) {
 
 router.get('/', (req, res) => {
     res.json({
-        message: 'Hi =)'
+        message: 'Hi =)',
     });
 });
 
@@ -56,7 +56,8 @@ router.post('/signup', (req, res, next) => {
                     .then(hash => {
                         const newUser = {
                             email: req.body.email,
-                            password: hash
+                            password: hash,
+                            rub: 0
                         };
 
                         users.insert(newUser)
