@@ -72,7 +72,7 @@ router.post('/signup', (req, res, next) => {
                             })
                     });
             }
-        })
+        });
     } else {
         res.status(422);
         next(result.error);

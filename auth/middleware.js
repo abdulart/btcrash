@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const db = require('../config/connection');
+const users = db.get('users');
 
 function checkTokenSetUser(req, res, next) {
     const authHeader = req.get('authorization');
@@ -9,8 +11,24 @@ function checkTokenSetUser(req, res, next) {
                 if(error) {
                     console.log(error);
                 }
-                req.user = user;
-                next();
+
+                users.findOne({
+                    email: user.email
+                }).then(usr => {
+                    // if user is undefined, username is not in the db
+                    if(usr) {
+                        const ttl_num = Math.round(usr.rub*100) /100;
+                        req.user = {
+                            email: usr.email,
+                            token: usr.token,
+                            rub: ttl_num,
+                        };
+                        next();
+                    } else {
+                        req.user = user;
+                        next();
+                    }
+                });
             });
         } else {
             next();
