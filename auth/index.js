@@ -28,10 +28,11 @@ function createTokenSendResponse(user, res, next) {
             const error = new Error('Ошибка логина');
             next(error);
         } else {
+            const ttl_num = Math.round(user.rub*100) /100;
             res.json({
                 email: payload.email,
                 token,
-                rub: user.rub,
+                rub: ttl_num,
             });
         }
     });
@@ -60,7 +61,7 @@ router.post('/signup', (req, res, next) => {
                         const newUser = {
                             email: req.body.email,
                             password: hash,
-                            rub: 0
+                            rub: 1000
                         };
 
                         users.insert(newUser)
