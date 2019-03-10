@@ -9,7 +9,7 @@ const middlewares = require('./auth/middleware');
 
 app.use(volleyball);
 app.use(cors({
-    origin: 'http://localhost:8080'
+    origin: '*'
 }));
 app.use(express.json());
 
