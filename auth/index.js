@@ -17,8 +17,7 @@ const schema = Joi.object().keys({
 function createTokenSendResponse(user, res, next) {
     const payload = {
         _id: user._id,
-        email: user.email,
-        rub: user.rub
+        email: user.email
     };
     jwt.sign(payload, '1wb46x!fasdf!efpeurpwurjfa;sldfj941!!!jfdjfa093nn', {
         expiresIn: '1d'
@@ -28,11 +27,10 @@ function createTokenSendResponse(user, res, next) {
             const error = new Error('Ошибка логина');
             next(error);
         } else {
-            const ttl_num = Math.round(user.rub*100) /100;
+            //const ttl_num = Math.round(user.rub*100) /100;
             res.json({
                 email: payload.email,
-                token,
-                rub: ttl_num,
+                token
             });
         }
     });
@@ -50,7 +48,6 @@ router.post('/signup', (req, res, next) => {
         users.findOne({
             email: req.body.email
         }).then(user => {
-            // if user is undefined, username is not in the db
             if(user) {
                 const error = new Error('Такой имейл уже зарегистрирован 😭');
                 res.status(409);
@@ -60,8 +57,7 @@ router.post('/signup', (req, res, next) => {
                     .then(hash => {
                         const newUser = {
                             email: req.body.email,
-                            password: hash,
-                            rub: 1000
+                            password: hash
                         };
 
                         users.insert(newUser)
