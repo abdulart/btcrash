@@ -1,10 +1,12 @@
 const express = require('express');
 const volleyball = require('volleyball');
 const cors = require('cors');
+
 const app = express();
+
 const auth = require('./auth/index');
-const notes = require('./api/notes');
-const crash = require('./api/crash');
+//const crash = require('./api/crash');
+
 const middlewares = require('./auth/middleware');
 
 app.use(volleyball);
@@ -23,8 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', auth);
-app.use('/api/v1/notes', middlewares.isLoggedIn, notes);
-app.use('/api/v1/crash', crash);
+//app.use('/api/v1/crash', crash);
 
 function notFound(req, res, next) {
     res.status(404);
